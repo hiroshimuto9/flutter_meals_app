@@ -8,7 +8,7 @@ enum Complexity {
 
 enum Affordability {
   Affordable,
-  Pricery,
+  Pricey,
   Luxurious,
 }
 
@@ -27,7 +27,7 @@ class Meal {
   final bool isVegan;
   final bool isVegetarian;
 
-  Meal({
+  const Meal({
     @required this.id,
     @required this.categories,
     @required this.title,
