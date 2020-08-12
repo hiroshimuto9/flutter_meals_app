@@ -49,6 +49,23 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  // 現状の実装の場合、お気に入りデータに関係無い部分まで再構築されパフォーマンス的に好ましく無いが、
+  // この学習章時点では保留
+  void toggleFavorite(String mealId) {
+    final exsistinIndex =  _favoriteMeals.indexWhere((meal) =>
+      meal.id == mealId
+    );
+    if (exsistinIndex >= 0) {
+      setState(() {
+        _favoriteMeals.removeAt(exsistinIndex);
+      });
+    } else {
+      _favoriteMeals.add(
+        DUMMY_MEALS.firstWhere((meal) => meal.id == mealId)
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
