@@ -51,19 +51,25 @@ class _MyAppState extends State<MyApp> {
 
   // 現状の実装の場合、お気に入りデータに関係無い部分まで再構築されパフォーマンス的に好ましく無いが、
   // この学習章時点では保留
-  void toggleFavorite(String mealId) {
-    final exsistinIndex =  _favoriteMeals.indexWhere((meal) =>
+  void _toggleFavorite(String mealId) {
+    final exsistingIndex =  _favoriteMeals.indexWhere((meal) =>
       meal.id == mealId
     );
-    if (exsistinIndex >= 0) {
+    if (exsistingIndex >= 0) {
       setState(() {
-        _favoriteMeals.removeAt(exsistinIndex);
+        _favoriteMeals.removeAt(exsistingIndex);
       });
     } else {
-      _favoriteMeals.add(
-        DUMMY_MEALS.firstWhere((meal) => meal.id == mealId)
-      );
+      setState(() {
+        _favoriteMeals.add(
+          DUMMY_MEALS.firstWhere((meal) => meal.id == mealId),
+        );
+      });
     }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favoriteMeals.any((meal) => meal.id == id);
   }
 
   @override
@@ -91,7 +97,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) => TabsScreen(_favoriteMeals),
         CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(_availableMeals),
-        MealDetailScreen.routeName: (context) => MealDetailScreen(),
+        MealDetailScreen.routeName: (context) => MealDetailScreen(_toggleFavorite, _isMealFavorite),
         FiltersScreen.routeName: (context) => FiltersScreen(_filters, _setFilters),
       },
       onUnknownRoute: (settings) {
